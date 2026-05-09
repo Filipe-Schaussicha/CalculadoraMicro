@@ -23,6 +23,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(CalculadoraAsm
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        elementooperacao.h elementooperacao.cpp
+        equacao.h equacao.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CalculadoraAsm APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
