@@ -43,25 +43,38 @@ void DialogLerValor::on_BtnCancelar_clicked()
 void DialogLerValor::on_BtnOK_clicked()
 {
     QString texto = ui->lineEdit->text();
+    int i = 0;
 
+    // Ignora textos vazios
     if(texto == ""){
         ui->LedSaida->setPlaceholderText("A entrada não pode estar vazia");
         return;
     }
 
-    bool virgula_encontrada = false;
-    QString char_aceitos = "0123456789-";
-    for(int i = 0; i < texto.size(); i++){
-        if(texto[i] == '-' && i != 0){
-            ui->lineEdit->setText("");
-            ui->LedSaida->setPlaceholderText("Entrada inválida");
-            return;
-        }
+    // ignora o sinal negativo do início
+    if(texto[i] == '-') i++;
 
+    // Verifica virgula no início
+    if(texto[i] == ',' || texto[i] == '.'){
+        ui->lineEdit->setText("");
+        ui->LedSaida->setPlaceholderText("Entrada inválida");
+        return;
+    }
+
+    // Ignora virgulas ou ponto do final
+    if(texto[texto.size() -1] == ',' || texto[texto.size() -1] == '.'){
+        texto.removeLast();
+    }
+
+    bool virgula_encontrada = false;
+    QString char_aceitos = "0123456789";
+    for(; i < texto.size(); i++){
+        // Converte pontos em virgula
         if(texto[i] == "."){
             texto[i] = ',';
         }
 
+        // Verifica por multiplas virgulas
         if(texto[i] == ","){
             if(virgula_encontrada){
                 ui->lineEdit->setText("");
@@ -70,6 +83,7 @@ void DialogLerValor::on_BtnOK_clicked()
             }else{
                 virgula_encontrada = true;
             }
+        // Retorna erro para caracteres não aceitos
         }else if(!char_aceitos.contains(texto[i])){
             ui->lineEdit->setText("");
             ui->LedSaida->setPlaceholderText("Entrada inválida!");
