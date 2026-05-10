@@ -2,6 +2,7 @@
 #define ELEMENTOOPERACAO_H
 
 #include <QString>
+#include "utilidades.h"
 
 // Enum com os os possíveis tipos de elementos
 typedef enum{
@@ -53,6 +54,24 @@ public:
 
     void addFim(QString qs) override;
     bool removeFim() override;
+    QString paraString() override;
+};
+
+class Logaritimo: public Operador{
+public:
+    tipoElemento tipoBase;
+    QString valorBase;
+
+    Logaritimo(tipoElemento tipoBase, QString valBase);
+    QString paraString() override;
+};
+
+class Raiz: public Operador{
+public:
+    tipoElemento tipoBase;
+    QString valorBase;
+
+    Raiz(tipoElemento tipoBase, QString valBase);
     QString paraString() override;
 };
 

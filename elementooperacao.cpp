@@ -47,8 +47,6 @@ QString Operador::paraString(){
     case SUB: return "-";
     case DIV: return "/";
     case MUL: return "*";
-    //case LOG: return "log";
-    case LN: return "ln";
     case FAT: return "!";
     case SEN: return "sen";
     case COS: return "cos";
@@ -71,6 +69,50 @@ QString Operandos::paraString(){
     case EULER: saida = "e"; break;
     default: saida = this->valor; break;
     }
+
+    return saida;
+}
+
+Logaritimo::Logaritimo(tipoElemento tipoBase, QString valBase) : Operador(LOG){
+    this->tipoBase = tipoBase;
+    this->valorBase = valBase;
+}
+
+QString Logaritimo::paraString(){
+    if(this->tipoBase == EULER){
+        return "ln";
+    }
+
+    QString saida = "log";
+    if(this->tipoBase == PI){
+        saida.append(Utilidades::numParaSubscrito("π"));
+    }else{
+        saida.append(Utilidades::numParaSubscrito(this->valorBase));
+    }
+
+    return saida;
+}
+
+Raiz::Raiz(tipoElemento tipoBase, QString valBase) : Operador(LOG){
+    this->tipoBase = tipoBase;
+    this->valorBase = valBase;
+}
+
+QString Raiz::paraString(){
+    if(this->valorBase == "2"){
+        return "√";
+    }
+
+    QString saida = "";
+    if(this->tipoBase == PI){
+        saida.append(Utilidades::numParaSobrescrito("π"));
+    }else if(this->tipoBase == EULER){
+        saida.append(Utilidades::numParaSobrescrito("e"));
+    }else{
+        saida.append(Utilidades::numParaSobrescrito(this->valorBase));
+    }
+
+    saida.append("√");
 
     return saida;
 }

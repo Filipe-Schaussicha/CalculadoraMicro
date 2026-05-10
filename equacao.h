@@ -15,6 +15,8 @@ public:
 
     void addOperando(tipoElemento tipo, QString val);
     void addOperador(tipoElemento tipo);
+    void addLog(tipoElemento tipoBase, QString val);
+    void addRaiz(tipoElemento tipoElevado, QString val);
     void backspace();
     QString paraString();
 };

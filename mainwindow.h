@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "equacao.h"
+#include "dialoglervalor.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -82,6 +83,10 @@ private slots:
     void on_BtnFrac_clicked();
 
     void on_BtnElevado_clicked();
+
+    void on_Btnlog_clicked();
+
+    void on_BtnRaizY_clicked();
 
 private:
     Ui::MainWindow *ui;

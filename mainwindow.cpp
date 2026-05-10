@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+#include <QDebug>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -148,7 +150,7 @@ void MainWindow::on_BtnDiv_clicked()
 
 void MainWindow::on_BtnLn_clicked()
 {
-    equacao->addOperador(LN);
+    equacao->addLog(EULER, "");
     atualizaMostrador();
 }
 
@@ -183,7 +185,7 @@ void MainWindow::on_BtnTg_clicked()
 
 void MainWindow::on_BtnRaizQuadrada_clicked()
 {
-    equacao->addOperador(RAIZ);
+    equacao->addRaiz(NUM, "2");
     atualizaMostrador();
 }
 
@@ -231,5 +233,49 @@ void MainWindow::on_BtnElevado_clicked()
 {
     equacao->addOperador(ELEVADO);
     atualizaMostrador();
+}
+
+
+void MainWindow::on_Btnlog_clicked()
+{
+    DialogLerValor lerValor;
+
+    lerValor.mudarLabel("Digite o valor da base do Log:");
+
+    if(lerValor.exec() == QDialog::Accepted){
+        QString base = lerValor.getTexto();
+
+        if(base == "e"){
+            equacao->addLog(EULER, "");
+        }else if(base == "π"){
+            equacao->addLog(PI, "");
+        }else{
+            equacao->addLog(NUM, base);
+        }
+
+        atualizaMostrador();
+    }
+}
+
+
+void MainWindow::on_BtnRaizY_clicked()
+{
+    DialogLerValor lerValor;
+
+    lerValor.mudarLabel("Digite o valor do indice da raiz:");
+
+    if(lerValor.exec() == QDialog::Accepted){
+        QString base = lerValor.getTexto();
+
+        if(base == "e"){
+            equacao->addRaiz(EULER, "");
+        }else if(base == "π"){
+            equacao->addRaiz(PI, "");
+        }else{
+            equacao->addRaiz(NUM, base);
+        }
+
+        atualizaMostrador();
+    }
 }
 

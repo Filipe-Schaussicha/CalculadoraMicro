@@ -26,6 +26,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         elementooperacao.h elementooperacao.cpp
         equacao.h equacao.cpp
         utilidades.h utilidades.cpp
+        dialoglervalor.h dialoglervalor.cpp dialoglervalor.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CalculadoraAsm APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

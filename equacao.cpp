@@ -7,7 +7,7 @@ Equacao::Equacao() {
 
 void Equacao::addOperando(tipoElemento tipo, QString val){
     // Caso haja a tentativa de adicionar uma virgula sozinha
-    if(listaElementos.size() > 0 && listaElementos.back()->tipo != NUM && val == ","){
+    if((listaElementos.size() > 0 && listaElementos.back()->tipo != NUM || listaElementos.size() == 0) && val == ","){
         val = "0,";
     }
 
@@ -22,6 +22,14 @@ void Equacao::addOperando(tipoElemento tipo, QString val){
 
 void Equacao::addOperador(tipoElemento tipo){
     this->listaElementos.push_back(std::make_unique<Operador>(tipo));
+}
+
+void Equacao::addLog(tipoElemento tipoBase, QString val){
+    this->listaElementos.push_back(std::make_unique<Logaritimo>(tipoBase, val));
+}
+
+void Equacao::addRaiz(tipoElemento tipoElevado, QString val){
+    this->listaElementos.push_back(std::make_unique<Raiz>(tipoElevado, val));
 }
 
 // Remove o último digito ou o último elemento
