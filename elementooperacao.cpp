@@ -116,3 +116,13 @@ QString Raiz::paraString(){
 
     return saida;
 }
+
+void Operandos::trocarSinal(){
+    if(this->valor.first(1) == "-"){
+        this->valor.removeFirst();
+    }else{
+        this->valor.push_front("-");
+    }
+}
+
+void Operador::trocarSinal(){}

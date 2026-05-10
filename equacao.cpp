@@ -51,3 +51,9 @@ QString Equacao::paraString(){
 
     return saida;
 }
+
+void Equacao::trocaSinal(){
+    if(listaElementos.size() != 0 && listaElementos.back()->tipo == NUM){
+        listaElementos.back()->trocarSinal();
+    }
+}

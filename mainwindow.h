@@ -88,6 +88,8 @@ private slots:
 
     void on_BtnRaizY_clicked();
 
+    void on_BtnSinal_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -18,6 +18,7 @@ public:
     void addLog(tipoElemento tipoBase, QString val);
     void addRaiz(tipoElemento tipoElevado, QString val);
     void backspace();
+    void trocaSinal();
     QString paraString();
 };
 

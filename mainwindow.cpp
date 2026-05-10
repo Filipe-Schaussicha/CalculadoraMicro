@@ -279,3 +279,10 @@ void MainWindow::on_BtnRaizY_clicked()
     }
 }
 
+
+void MainWindow::on_BtnSinal_clicked()
+{
+    equacao->trocaSinal();
+    atualizaMostrador();
+}
+

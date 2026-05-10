@@ -35,6 +35,7 @@ public:
     virtual void addFim(QString qs) = 0;
     virtual bool removeFim() = 0;
     virtual ~ElementoOperacao() = default;
+    virtual void trocarSinal() = 0;
 };
 
 class Operador: public ElementoOperacao{
@@ -44,6 +45,7 @@ public:
     void addFim(QString qs) override;
     bool removeFim() override;
     QString paraString() override;
+    void trocarSinal() override;
 };
 
 class Operandos: public ElementoOperacao{
@@ -55,6 +57,7 @@ public:
     void addFim(QString qs) override;
     bool removeFim() override;
     QString paraString() override;
+    void trocarSinal() override;
 };
 
 class Logaritimo: public Operador{
