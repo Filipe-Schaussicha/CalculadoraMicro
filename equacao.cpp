@@ -24,6 +24,15 @@ void Equacao::addOperador(tipoElemento tipo){
     this->listaElementos.push_back(std::make_unique<Operador>(tipo));
 }
 
+// Remove o último digito ou o último elemento
+void Equacao::backspace(){
+    if(listaElementos.size() <= 0) return;
+
+    if(!listaElementos.back()->removeFim()){
+        listaElementos.pop_back();
+    }
+}
+
 QString Equacao::paraString(){
     QString saida;
 

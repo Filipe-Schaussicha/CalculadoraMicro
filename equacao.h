@@ -15,6 +15,7 @@ public:
 
     void addOperando(tipoElemento tipo, QString val);
     void addOperador(tipoElemento tipo);
+    void backspace();
     QString paraString();
 };
 

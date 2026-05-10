@@ -19,7 +19,9 @@ typedef enum{
     COS,
     TG,
     ELEVADO,
-    RAIZ
+    RAIZ,
+    ABRE_PARENTESES,
+    FECHA_PARENTESES
 }tipoElemento;
 
 // Classe que representa um elemento de uma operação
@@ -30,6 +32,7 @@ public:
 
     virtual QString paraString() = 0;
     virtual void addFim(QString qs) = 0;
+    virtual bool removeFim() = 0;
     virtual ~ElementoOperacao() = default;
 };
 
@@ -37,7 +40,8 @@ class Operador: public ElementoOperacao{
 public:
     Operador(tipoElemento tipo);
 
-    void addFim(QString qs);
+    void addFim(QString qs) override;
+    bool removeFim() override;
     QString paraString() override;
 };
 
@@ -47,7 +51,8 @@ public:
 
     Operandos(tipoElemento tipo, QString valor);
 
-    void addFim(QString qs);
+    void addFim(QString qs) override;
+    bool removeFim() override;
     QString paraString() override;
 };
 

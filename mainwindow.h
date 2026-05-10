@@ -16,7 +16,7 @@ class MainWindow : public QMainWindow
 
 public:
     // Equação do mostrador
-    Equacao equacao;
+    Equacao *equacao;
 
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
@@ -46,6 +46,42 @@ private slots:
     void on_BtnVirgula_clicked();
 
     void on_BtnPi_clicked();
+
+    void on_BtnBackspace_clicked();
+
+    void on_BtnClear_clicked();
+
+    void on_BtnMais_clicked();
+
+    void on_BtnMenos_clicked();
+
+    void on_BtnMult_clicked();
+
+    void on_BtnDiv_clicked();
+
+    void on_BtnLn_clicked();
+
+    void on_BtnFat_clicked();
+
+    void on_BtnSen_clicked();
+
+    void on_BtnCos_clicked();
+
+    void on_BtnTg_clicked();
+
+    void on_BtnRaizQuadrada_clicked();
+
+    void on_BtnElevadoA2_clicked();
+
+    void on_BtnEuler_clicked();
+
+    void on_BtnAbreParenteses_clicked();
+
+    void on_BntFechaParenteses_clicked();
+
+    void on_BtnFrac_clicked();
+
+    void on_BtnElevado_clicked();
 
 private:
     Ui::MainWindow *ui;
