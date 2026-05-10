@@ -62,7 +62,7 @@ void DialogLerValor::on_BtnOK_clicked()
     }
 
     // Ignora virgulas ou ponto do final
-    if(texto[texto.size() -1] == ',' || texto[texto.size() -1] == '.'){
+    if(texto.last(1) == "," || texto.last(1) == "."){
         texto.removeLast();
     }
 
@@ -70,7 +70,7 @@ void DialogLerValor::on_BtnOK_clicked()
     QString char_aceitos = "0123456789";
     for(; i < texto.size(); i++){
         // Converte pontos em virgula
-        if(texto[i] == "."){
+        if(texto[i] == '.'){
             texto[i] = ',';
         }
 
@@ -90,6 +90,8 @@ void DialogLerValor::on_BtnOK_clicked()
             return;
         }
     }
+
+    ui->lineEdit->setText(texto);
 
     accept();
 }
