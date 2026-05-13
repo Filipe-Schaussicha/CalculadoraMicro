@@ -151,6 +151,7 @@ void MainWindow::on_BtnDiv_clicked()
 void MainWindow::on_BtnLn_clicked()
 {
     equacao->addLog(EULER, "");
+    equacao->addOperador(ABRE_PARENTESES);
     atualizaMostrador();
 }
 
@@ -165,6 +166,7 @@ void MainWindow::on_BtnFat_clicked()
 void MainWindow::on_BtnSen_clicked()
 {
     equacao->addOperador(SEN);
+    equacao->addOperador(ABRE_PARENTESES);
     atualizaMostrador();
 }
 
@@ -172,6 +174,7 @@ void MainWindow::on_BtnSen_clicked()
 void MainWindow::on_BtnCos_clicked()
 {
     equacao->addOperador(COS);
+    equacao->addOperador(ABRE_PARENTESES);
     atualizaMostrador();
 }
 
@@ -179,6 +182,7 @@ void MainWindow::on_BtnCos_clicked()
 void MainWindow::on_BtnTg_clicked()
 {
     equacao->addOperador(TG);
+    equacao->addOperador(ABRE_PARENTESES);
     atualizaMostrador();
 }
 
@@ -186,6 +190,7 @@ void MainWindow::on_BtnTg_clicked()
 void MainWindow::on_BtnRaizQuadrada_clicked()
 {
     equacao->addRaiz(NUM, "2");
+    equacao->addOperador(ABRE_PARENTESES);
     atualizaMostrador();
 }
 
@@ -225,6 +230,7 @@ void MainWindow::on_BtnFrac_clicked()
     // Pode ter comportamento estranho
     equacao->addOperando(NUM, "1");
     equacao->addOperador(DIV);
+    //equacao->addOperador(ABRE_PARENTESES);
     atualizaMostrador();
 }
 
@@ -253,6 +259,7 @@ void MainWindow::on_Btnlog_clicked()
             equacao->addLog(NUM, base);
         }
 
+        equacao->addOperador(ABRE_PARENTESES);
         atualizaMostrador();
     }
 }
@@ -275,6 +282,7 @@ void MainWindow::on_BtnRaizY_clicked()
             equacao->addRaiz(NUM, base);
         }
 
+        equacao->addOperador(ABRE_PARENTESES);
         atualizaMostrador();
     }
 }
