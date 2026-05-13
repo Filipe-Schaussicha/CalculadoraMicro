@@ -14,7 +14,6 @@ typedef enum{
     DIV,
     MUL,
     LOG,
-    LN,
     FAT,
     SEN,
     COS,
@@ -22,7 +21,8 @@ typedef enum{
     ELEVADO,
     RAIZ,
     ABRE_PARENTESES,
-    FECHA_PARENTESES
+    FECHA_PARENTESES,
+    UM_SOBRE_X
 }tipoElemento;
 
 // Classe que representa um elemento de uma operação

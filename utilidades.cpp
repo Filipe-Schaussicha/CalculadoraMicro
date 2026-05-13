@@ -1,5 +1,6 @@
 #include "utilidades.h"
 
+// Serve para converter uma string de números em uma versão sobrescrita
 QString Utilidades::numParaSobrescrito(QString val){
     if(val == "π") return "ᵖⁱ";
 
@@ -17,6 +18,7 @@ QString Utilidades::numParaSobrescrito(QString val){
     return val;
 }
 
+// Serve para converter uma string de números em uma versão subscrita
 QString Utilidades::numParaSubscrito(QString val){
     if(val == "π") return "ₚᵢ";
 

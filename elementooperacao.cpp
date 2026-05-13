@@ -27,11 +27,13 @@ void Operandos::addFim(QString qs){
         this->valor.append(qs);
     }
 }
-
+ // Ingorar
 bool Operador::removeFim(){
     return false;
 }
 
+// Remove digito do final do número
+// Retorna falso caso não seja um número ou se o número só tiver um digito
 bool Operandos::removeFim(){
     if(this->valor.size() <= 1 || this->tipo == PI || this->tipo == EULER){
         return false;
@@ -41,6 +43,7 @@ bool Operandos::removeFim(){
     return true;
 }
 
+// Retorna equivalente do operador em string
 QString Operador::paraString(){
     switch (this->tipo) {
     case SOMA: return "+";
@@ -52,15 +55,16 @@ QString Operador::paraString(){
     case COS: return "cos";
     case TG: return "tg";
     case ELEVADO: return "^";
-    //case RAIZ: return "√";
     case ABRE_PARENTESES: return "(";
     case FECHA_PARENTESES: return ")";
+    case UM_SOBRE_X: return "⁻¹";
 
     default:
         return "NULO";
     }
 }
 
+// Retorna equivalente do operando em string
 QString Operandos::paraString(){
     QString saida;
 
@@ -73,11 +77,13 @@ QString Operandos::paraString(){
     return saida;
 }
 
+// Construtor de uma log
 Logaritimo::Logaritimo(tipoElemento tipoBase, QString valBase) : Operador(LOG){
     this->tipoBase = tipoBase;
     this->valorBase = valBase;
 }
 
+// Retorna equivalente do log em string
 QString Logaritimo::paraString(){
     if(this->tipoBase == EULER){
         return "ln";
@@ -93,11 +99,13 @@ QString Logaritimo::paraString(){
     return saida;
 }
 
+// Construtor de uma raiz
 Raiz::Raiz(tipoElemento tipoBase, QString valBase) : Operador(LOG){
     this->tipoBase = tipoBase;
     this->valorBase = valBase;
 }
 
+// Retorna equivalente da raiz em string
 QString Raiz::paraString(){
     if(this->valorBase == "2"){
         return "√";
@@ -117,6 +125,7 @@ QString Raiz::paraString(){
     return saida;
 }
 
+// Troca o sinal de um operando
 void Operandos::trocarSinal(){
     if(this->valor.first(1) == "-"){
         this->valor.removeFirst();
@@ -125,4 +134,5 @@ void Operandos::trocarSinal(){
     }
 }
 
+// Ignorar
 void Operador::trocarSinal(){}

@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->equacao = new Equacao();
+    this->equacao = new Equacao(ui->CbxInversao->isChecked());
 }
 
 MainWindow::~MainWindow()
@@ -17,10 +17,16 @@ MainWindow::~MainWindow()
     delete equacao;
 }
 
+// Atualiza o mostrador da calculador
 void MainWindow::atualizaMostrador(){
     ui->LedMostrador->setText(equacao->paraString());
 }
 
+
+/*
+* Função de click para cada botão do mostrador
+* - Eu sei que tem melhores formas de fazer isso :(
+*/
 void MainWindow::on_Btn0_clicked()
 {
     equacao->addOperando(NUM, "0");
@@ -115,7 +121,7 @@ void MainWindow::on_BtnBackspace_clicked()
 void MainWindow::on_BtnClear_clicked()
 {
     delete equacao;
-    equacao = new Equacao();
+    equacao = new Equacao(ui->CbxInversao->isChecked());
     atualizaMostrador();
 }
 
@@ -227,10 +233,7 @@ void MainWindow::on_BntFechaParenteses_clicked()
 
 void MainWindow::on_BtnFrac_clicked()
 {
-    // Pode ter comportamento estranho
-    equacao->addOperando(NUM, "1");
-    equacao->addOperador(DIV);
-    //equacao->addOperador(ABRE_PARENTESES);
+    equacao->addOperador(UM_SOBRE_X);
     atualizaMostrador();
 }
 
@@ -291,6 +294,13 @@ void MainWindow::on_BtnRaizY_clicked()
 void MainWindow::on_BtnSinal_clicked()
 {
     equacao->trocaSinal();
+    atualizaMostrador();
+}
+
+// Quando a ckeck box inversão é mudada
+void MainWindow::on_CbxInversao_checkStateChanged(const Qt::CheckState &arg1)
+{
+    equacao->atualizarInversao(ui->CbxInversao->isChecked());
     atualizaMostrador();
 }
 

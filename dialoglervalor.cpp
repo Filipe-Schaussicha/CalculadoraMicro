@@ -1,6 +1,9 @@
 #include "dialoglervalor.h"
 #include "ui_dialoglervalor.h"
 
+/*
+* Pop-up aberto para ler a base do log ou da raiz
+*/
 DialogLerValor::DialogLerValor(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::DialogLerValor)

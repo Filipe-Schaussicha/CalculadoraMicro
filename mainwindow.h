@@ -90,6 +90,8 @@ private slots:
 
     void on_BtnSinal_clicked();
 
+    void on_CbxInversao_checkStateChanged(const Qt::CheckState &arg1);
+
 private:
     Ui::MainWindow *ui;
 };
