@@ -5,6 +5,12 @@
 #include "equacao.h"
 #include "dialoglervalor.h"
 
+//Artur
+#include "pacoteDaExpressao.h"
+#include<vector>
+#include<QString>
+
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -19,9 +25,14 @@ public:
     // Equação do mostrador
     Equacao *equacao;
 
+    //Artur
+    std::vector<pacoteDaExpressao> *pctExpressao;
+
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
     void atualizaMostrador();
+
+    void meuAtualizaMostrador(QString txt);
 
 private slots:
     void on_Btn0_clicked();
@@ -91,6 +102,8 @@ private slots:
     void on_BtnSinal_clicked();
 
     void on_CbxInversao_checkStateChanged(const Qt::CheckState &arg1);
+
+    void on_BtnIgual_clicked();
 
 private:
     Ui::MainWindow *ui;
