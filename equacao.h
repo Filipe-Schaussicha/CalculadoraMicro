@@ -15,18 +15,14 @@ private:
     std::vector<std::unique_ptr<ElementoOperacao>> listaElementos;
 
 public:
-    bool estaInvertido;
-
     // Metodos
-    Equacao(bool inversao);
+    Equacao();
 
     void addOperando(tipoElemento tipo, QString val);
     void addOperador(tipoElemento tipo);
-    void addLog(tipoElemento tipoBase, QString val);
     void addRaiz(tipoElemento tipoElevado, QString val);
     void backspace();
     void trocaSinal();
-    void atualizarInversao(bool novo);
     QString paraString();
 };
 

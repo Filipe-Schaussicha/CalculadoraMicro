@@ -6,10 +6,8 @@
 */
 
 // Inicializador
-Equacao::Equacao(bool inversao){
+Equacao::Equacao(){
     this->listaElementos;
-
-    this->estaInvertido = inversao;
 }
 
 // Adiciona um novo operando (número)
@@ -33,11 +31,6 @@ void Equacao::addOperador(tipoElemento tipo){
     this->listaElementos.push_back(std::make_unique<Operador>(tipo));
 }
 
-// Adiciona um novo operador (feito espeficiamente para log e ln)
-void Equacao::addLog(tipoElemento tipoBase, QString val){
-    this->listaElementos.push_back(std::make_unique<Logaritimo>(tipoBase, val));
-}
-
 // Adiciona um novo operador (feito espeficiamente para raiz)
 void Equacao::addRaiz(tipoElemento tipoElevado, QString val){
     this->listaElementos.push_back(std::make_unique<Raiz>(tipoElevado, val));
@@ -58,17 +51,6 @@ QString Equacao::paraString(){
 
     for(auto& e: listaElementos){
         QString elemento = e->paraString();
-
-        // Muda a funções trigonometricas quando intertidas
-        if(this->estaInvertido){
-            if(elemento == "sen")
-                elemento = "arcsen";
-            else if (elemento == "cos")
-                elemento = "arccos";
-            else if (elemento == "tg")
-                elemento = "arctg";
-        }
-
         saida.append(elemento);
         saida.append(" ");
     }
@@ -81,8 +63,4 @@ void Equacao::trocaSinal(){
     if(listaElementos.size() != 0 && listaElementos.back()->tipo == NUM){
         listaElementos.back()->trocarSinal();
     }
-}
-
-void Equacao::atualizarInversao(bool novo){
-    this->estaInvertido = novo;
 }

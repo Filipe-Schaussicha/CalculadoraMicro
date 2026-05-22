@@ -4,6 +4,9 @@
 #include <QString>
 #include "utilidades.h"
 
+#define PI_VAL 3.14159265
+#define EULER_VAL 2.71828
+
 // Enum com os os possíveis tipos de elementos
 typedef enum{
     NUM,
@@ -14,10 +17,14 @@ typedef enum{
     DIV,
     MUL,
     LOG,
+    LN,
     FAT,
     SEN,
     COS,
     TG,
+    ARCSEN,
+    ARCCOS,
+    ARCTG,
     ELEVADO,
     RAIZ,
     ABRE_PARENTESES,
@@ -58,15 +65,6 @@ public:
     bool removeFim() override;
     QString paraString() override;
     void trocarSinal() override;
-};
-
-class Logaritimo: public Operador{
-public:
-    tipoElemento tipoBase;
-    QString valorBase;
-
-    Logaritimo(tipoElemento tipoBase, QString valBase);
-    QString paraString() override;
 };
 
 class Raiz: public Operador{

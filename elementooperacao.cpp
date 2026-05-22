@@ -58,6 +58,11 @@ QString Operador::paraString(){
     case ABRE_PARENTESES: return "(";
     case FECHA_PARENTESES: return ")";
     case UM_SOBRE_X: return "⁻¹";
+    case LOG: return "log";
+    case LN: return "ln";
+    case ARCSEN: return "arcsen";
+    case ARCCOS: return "arccos";
+    case ARCTG: return "arctg";
 
     default:
         return "NULO";
@@ -72,28 +77,6 @@ QString Operandos::paraString(){
     case PI: saida = "π"; break;
     case EULER: saida = "e"; break;
     default: saida = this->valor; break;
-    }
-
-    return saida;
-}
-
-// Construtor de uma log
-Logaritimo::Logaritimo(tipoElemento tipoBase, QString valBase) : Operador(LOG){
-    this->tipoBase = tipoBase;
-    this->valorBase = valBase;
-}
-
-// Retorna equivalente do log em string
-QString Logaritimo::paraString(){
-    if(this->tipoBase == EULER){
-        return "ln";
-    }
-
-    QString saida = "log";
-    if(this->tipoBase == PI){
-        saida.append(Utilidades::numParaSubscrito("π"));
-    }else{
-        saida.append(Utilidades::numParaSubscrito(this->valorBase));
     }
 
     return saida;

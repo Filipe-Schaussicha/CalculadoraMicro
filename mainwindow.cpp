@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->equacao = new Equacao(ui->CbxInversao->isChecked());
+    this->equacao = new Equacao();
     //A
     this->pctExpressao = new std::vector<pacoteDaExpressao>();
 }
@@ -170,7 +170,7 @@ void MainWindow::on_BtnBackspace_clicked()
 void MainWindow::on_BtnClear_clicked()
 {
     delete equacao;
-    equacao = new Equacao(ui->CbxInversao->isChecked());
+    equacao = new Equacao();
     atualizaMostrador();
 
     delete pctExpressao;
@@ -220,7 +220,7 @@ void MainWindow::on_BtnDiv_clicked()
 
 void MainWindow::on_BtnLn_clicked()
 {
-    equacao->addLog(EULER, "");
+    equacao->addOperador(LN);
     equacao->addOperador(ABRE_PARENTESES);
     atualizaMostrador();
 
@@ -243,12 +243,21 @@ void MainWindow::on_BtnFat_clicked()
 
 void MainWindow::on_BtnSen_clicked()
 {
-    equacao->addOperador(SEN);
+    if(!ui->CbxInversao->isChecked()){
+        equacao->addOperador(SEN);
+
+        pacoteDaExpressao novo("sen",4,0);
+        pctExpressao->push_back(novo);
+    }else{
+        equacao->addOperador(ARCSEN);
+
+        pacoteDaExpressao novo("arcsen",4,0);
+        pctExpressao->push_back(novo);
+    }
+
     equacao->addOperador(ABRE_PARENTESES);
     atualizaMostrador();
 
-    pacoteDaExpressao novo("sen",4,0);
-    pctExpressao->push_back(novo);
     pacoteDaExpressao novo2("(",5,0);
     pctExpressao->push_back(novo2);
 }
@@ -256,12 +265,21 @@ void MainWindow::on_BtnSen_clicked()
 
 void MainWindow::on_BtnCos_clicked()
 {
-    equacao->addOperador(COS);
+    if(!ui->CbxInversao->isChecked()){
+        equacao->addOperador(COS);
+
+        pacoteDaExpressao novo("cos",4,0);
+        pctExpressao->push_back(novo);
+    }else{
+        equacao->addOperador(ARCCOS);
+
+        pacoteDaExpressao novo("arccos",4,0);
+        pctExpressao->push_back(novo);
+    }
+
     equacao->addOperador(ABRE_PARENTESES);
     atualizaMostrador();
 
-    pacoteDaExpressao novo("cos",4,0);
-    pctExpressao->push_back(novo);
     pacoteDaExpressao novo2("(",5,0);
     pctExpressao->push_back(novo2);
 }
@@ -269,12 +287,21 @@ void MainWindow::on_BtnCos_clicked()
 
 void MainWindow::on_BtnTg_clicked()
 {
-    equacao->addOperador(TG);
+    if(!ui->CbxInversao->isChecked()){
+        equacao->addOperador(TG);
+
+        pacoteDaExpressao novo("tan",4,0);
+        pctExpressao->push_back(novo);
+    }else{
+        equacao->addOperador(ARCTG);
+
+        pacoteDaExpressao novo("arctan",4,0);
+        pctExpressao->push_back(novo);
+    }
+
     equacao->addOperador(ABRE_PARENTESES);
     atualizaMostrador();
 
-    pacoteDaExpressao novo("tan",4,0);
-    pctExpressao->push_back(novo);
     pacoteDaExpressao novo2("(",5,0);
     pctExpressao->push_back(novo2);
 }
@@ -357,37 +384,14 @@ void MainWindow::on_BtnElevado_clicked()
 
 void MainWindow::on_Btnlog_clicked()
 {
-    DialogLerValor lerValor;
+    equacao->addOperador(LOG);
+    equacao->addOperador(ABRE_PARENTESES);
+    atualizaMostrador();
 
-
-    lerValor.mudarLabel("Digite o valor da base do Log:");
-
-    if(lerValor.exec() == QDialog::Accepted){
-        QString base = lerValor.getTexto();
-
-        if(base == "e"){
-            equacao->addLog(EULER, "");
-            pacoteDaExpressao novo("log",4,2.71828182845904523536);
-            pctExpressao->push_back(novo);
-            pacoteDaExpressao novo2("(",5,0);
-            pctExpressao->push_back(novo2);
-        }else if(base == "π"){
-            equacao->addLog(PI, "");
-            pacoteDaExpressao novo("log",4,3.14159265358979323846);
-            pctExpressao->push_back(novo);
-            pacoteDaExpressao novo2("(",5,0);
-            pctExpressao->push_back(novo2);
-        }else{
-            equacao->addLog(NUM, base);
-            pacoteDaExpressao novo("log",4,base.toFloat());
-            pctExpressao->push_back(novo);
-            pacoteDaExpressao novo2("(",5,0);
-            pctExpressao->push_back(novo2);
-        }
-
-        equacao->addOperador(ABRE_PARENTESES);
-        atualizaMostrador();
-    }
+    pacoteDaExpressao novo("log",4,10);
+    pctExpressao->push_back(novo);
+    pacoteDaExpressao novo2("(",5,0);
+    pctExpressao->push_back(novo2);
 }
 
 
@@ -435,8 +439,15 @@ void MainWindow::on_BtnSinal_clicked()
 // Quando a ckeck box inversão é mudada
 void MainWindow::on_CbxInversao_checkStateChanged(const Qt::CheckState &arg1)
 {
-    equacao->atualizarInversao(ui->CbxInversao->isChecked());
-    atualizaMostrador();
+    if(ui->CbxInversao->isChecked()){
+        ui->BtnSen->setText("arcsen");
+        ui->BtnCos->setText("arccos");
+        ui->BtnTg->setText("arctg");
+    }else{
+        ui->BtnSen->setText("sen");
+        ui->BtnCos->setText("cos");
+        ui->BtnTg->setText("tg");
+    }
 }
 
 
