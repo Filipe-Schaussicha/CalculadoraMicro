@@ -9,6 +9,8 @@ DialogLerValor::DialogLerValor(QWidget *parent)
     , ui(new Ui::DialogLerValor)
 {
     ui->setupUi(this);
+
+    setFixedSize(width(), height());
 }
 
 DialogLerValor::~DialogLerValor()

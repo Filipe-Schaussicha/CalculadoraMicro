@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
     this->equacao = new Equacao();
     //A
     this->pctExpressao = new std::vector<pacoteDaExpressao>();
+
+    setFixedSize(width(), height());
 }
 
 MainWindow::~MainWindow()
