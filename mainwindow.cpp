@@ -30,6 +30,7 @@ void MainWindow::atualizaMostrador(){
 }
 
 void MainWindow::meuAtualizaMostrador(QString txt){
+    ui->LedMostrador->setText("");
     ui->LedMostrador->setText(txt);
 }
 
@@ -315,7 +316,7 @@ void MainWindow::on_BtnRaizQuadrada_clicked()
     equacao->addOperador(ABRE_PARENTESES);
     atualizaMostrador();
 
-    pacoteDaExpressao novo("√",4,2);
+    pacoteDaExpressao novo("√",3,2);
     pctExpressao->push_back(novo);
     pacoteDaExpressao novo2("(",5,0);
     pctExpressao->push_back(novo2);
@@ -328,8 +329,10 @@ void MainWindow::on_BtnElevadoA2_clicked()
     equacao->addOperando(NUM, "2");
     atualizaMostrador();
 
-    pacoteDaExpressao novo("^2",3,0);
+    pacoteDaExpressao novo("^",3,0);
     pctExpressao->push_back(novo);
+    pacoteDaExpressao novo2("2",0,0);
+    pctExpressao->push_back(novo2);
 }
 
 
@@ -408,19 +411,19 @@ void MainWindow::on_BtnRaizY_clicked()
 
         if(base == "e"){
             equacao->addRaiz(EULER, "");
-            pacoteDaExpressao novo("√",4,2.71828182845904523536);
+            pacoteDaExpressao novo("√",3,2.71828182845904523536);
             pctExpressao->push_back(novo);
             pacoteDaExpressao novo2("(",5,0);
             pctExpressao->push_back(novo2);
         }else if(base == "π"){
             equacao->addRaiz(PI, "");
-            pacoteDaExpressao novo("√",4,3.14159265358979323846);
+            pacoteDaExpressao novo("√",3,3.14159265358979323846);
             pctExpressao->push_back(novo);
             pacoteDaExpressao novo2("(",5,0);
             pctExpressao->push_back(novo2);
         }else{
             equacao->addRaiz(NUM, base);
-            pacoteDaExpressao novo("√",4,base.toFloat());
+            pacoteDaExpressao novo("√",3,base.toFloat());
             pctExpressao->push_back(novo);
             pacoteDaExpressao novo2("(",5,0);
             pctExpressao->push_back(novo2);
@@ -436,6 +439,20 @@ void MainWindow::on_BtnSinal_clicked()
 {
     equacao->trocaSinal();
     atualizaMostrador();
+
+    if(!pctExpressao->empty()) {
+        if(pctExpressao->back().getProcedencia() == 0) {
+
+            pacoteDaExpressao temp = pctExpressao->back();
+            pctExpressao->pop_back();
+
+            double tempDouble = temp.getNome().toDouble();
+            tempDouble*=(-1);
+            temp.setNome(QString::number(tempDouble));
+
+            pctExpressao->push_back(temp);
+        }
+    }
 }
 
 // Quando a ckeck box inversão é mudada
@@ -461,11 +478,12 @@ void MainWindow::on_BtnIgual_clicked()
 
     std::vector<pacoteDaExpressao> temporario = portalPolones.polonese(*pctExpressao);
 
-
+    if(!temporario.empty()){
     if(temporario[0].getProcedencia()>=0) {
         meuAtualizaMostrador(pct.transformaEmTexto(temporario));
     } else {
         meuAtualizaMostrador("Erro de sintaxe!");
+    }
     }
 }
 
