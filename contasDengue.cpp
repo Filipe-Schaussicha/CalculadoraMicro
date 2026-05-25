@@ -4,18 +4,6 @@
 
 using namespace std;
 
-/**
- * A fazer:
- *
- * - [x] Soma
- * - [x] Div
- * - [x] Sen
- * - [x] Arcsen
- * - [x] Tg
- * - [\] Exp
- * - [x] Fatorial
- */
-
 double soma(double a, double b){
     double result;
 
@@ -87,7 +75,6 @@ double tangente(double x){
     return result;
 }
 
-// Está com algum erro
 double potenciacao(double x, double y){
     double result;
 
@@ -98,16 +85,13 @@ double potenciacao(double x, double y){
         "fldl %1;"
         "fyl2x;"
         "fmulp;"
-
-        "fld %%st;"
+        "fld %%st(0);"
         "frndint;"
-        "fsub %%st, %%st(1);"
+        "fsubr %%st, %%st(1);"
         "fxch;"
-
         "f2xm1;"
         "fld1;"
         "faddp;"
-
         "fscale;"
         "fstpl %0;"
 
@@ -211,10 +195,6 @@ double x_sobre_um(double x){
     return result;
 }
 
-double raiz(double x, double y){
-    return potenciacao(x, x_sobre_um(y));
-}
-
 int main(){
     cout << "Soma: " << soma(1.1, 2.2) << endl;
 
@@ -232,7 +212,7 @@ int main(){
 
     cout << "Radianos: " << graus_para_radianos(180) << endl;
 
-    cout << "1 sobre X: " << x_sobre_um(4) << endl;
+    cout << "1 sobre X: " << x_sobre_um(0.5) << endl;
 
     return 0;
 }
