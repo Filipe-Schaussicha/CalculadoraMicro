@@ -49,14 +49,26 @@ std::vector<pacoteDaExpressao> polonesa::polonese( std::vector<pacoteDaExpressao
         //é operador
         } else if(pseudoString[i].getProcedencia()>0 && pseudoString[i].getProcedencia()<5) {
 
-            while(pOperadores.size()>0 && pOperadores.top().getNome()!="(" &&
-                   pOperadores.top().getProcedencia() >= pseudoString[i].getProcedencia() ) {
+            if(pseudoString[i].getNome()!="^") {
+                while(pOperadores.size()>0 && pOperadores.top().getNome()!="(" &&
+                       pOperadores.top().getProcedencia() >= pseudoString[i].getProcedencia() ) {
 
-                saida.push_back(pOperadores.top());
-                pOperadores.pop();
+                    saida.push_back(pOperadores.top());
+                    pOperadores.pop();
+                }
+
+                pOperadores.push(pseudoString[i]);
+            } else {
+
+                while(pOperadores.size()>0 && pOperadores.top().getNome()!="(" &&
+                       pOperadores.top().getProcedencia() > pseudoString[i].getProcedencia() ) {
+
+                    saida.push_back(pOperadores.top());
+                    pOperadores.pop();
+                }
+
+                pOperadores.push(pseudoString[i]);
             }
-
-            pOperadores.push(pseudoString[i]);
 
         //é parentese
         } else if(pseudoString[i].getNome()=="(") {
@@ -67,20 +79,23 @@ std::vector<pacoteDaExpressao> polonesa::polonese( std::vector<pacoteDaExpressao
         } else {
 
             parenteses--;
+            bool abertura=false;
 
-            while(!pOperadores.empty() && pOperadores.top().getNome()!="(") {
-
-                saida.push_back(pOperadores.top());
-                pOperadores.pop();
-            }
-
-            if(!pOperadores.empty()) {
+            while(!pOperadores.empty()) {
                 if(pOperadores.top().getNome()=="(") {
+
+                    abertura=true;
+                    pOperadores.pop();
+                    break;
+                } else {
+
+                    saida.push_back(pOperadores.top());
                     pOperadores.pop();
                 }
             }
 
-            if(pOperadores.empty()) {
+
+            if(!abertura) {
 
                 std::vector<pacoteDaExpressao> p;
                 pacoteDaExpressao erro;
