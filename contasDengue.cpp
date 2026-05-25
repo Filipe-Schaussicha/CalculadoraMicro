@@ -22,6 +22,9 @@ double soma(double a, double b){
 }
 
 double divisao(double a, double b){
+    if(b == 0)
+        return NAN;
+
     double result;
 
     asm volatile(
