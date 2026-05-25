@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iostream>
 #include <stdio.h>
 
@@ -9,7 +10,7 @@ using namespace std;
  * - [x] Soma
  * - [x] Div
  * - [x] Sen
- * - [ ] Arcsen
+ * - [x] Arcsen
  * - [x] Tg
  * - [\] Exp
  * - [x] Fatorial
@@ -66,6 +67,10 @@ double seno(double x){
 }
 
 double tangente(double x){
+    // Validação de domínio
+    if (fabs(cos(x)) < 0.0000000001)
+        return NAN;
+
     double result;
 
     asm volatile(
@@ -113,10 +118,12 @@ double potenciacao(double x, double y){
     return result;
 }
 
-int fatorial(int num){
+double fatorial(int num){
+    if(num < 0)
+        return NAN;
 
     double result;
-    double n = num;
+    double n = (double)num;
 
     asm volatile(
         "finit;"
@@ -144,6 +151,31 @@ int fatorial(int num){
     return result;
 }
 
+double arcsen(double x){
+    if(x < -1.0 || x > 1.0)
+        return NAN;
+
+    double result;
+
+    asm volatile(
+        "finit;"
+        "fldl %1;"
+        "fld %%st(0);"
+        "fmulp;"
+        "fld1;"
+        "fsub %%st(1), %%st(0);"
+        "fsqrt;"
+        "fldl %1;"
+        "fxch;"
+        "fpatan;"
+        "fstpl %0;"
+        : "=m"(result)
+        : "m"(x)
+    );
+
+    return result;
+}
+
 int main(){
     cout << "Soma: " << soma(1.1, 2.2) << endl;
 
@@ -151,11 +183,13 @@ int main(){
 
     printf("Seno: %.2f\n", seno(3.14159265 / 2));
 
-    printf("Tangente: %.2f\n", tangente(0));
+    printf("Tangente: %.2f\n", tangente(M_PI));
 
     cout << "Pontenciacão: " << potenciacao(3, 2) << endl;
 
-    cout << "Fatorial: " << fatorial(10) << endl;
+    cout << "Fatorial: " << fatorial(5) << endl;
+
+    cout << "Arco seno: " << arcsen(1.0) << endl;
 
     return 0;
 }
