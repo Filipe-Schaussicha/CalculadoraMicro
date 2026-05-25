@@ -176,6 +176,25 @@ double arcsen(double x){
     return result;
 }
 
+double graus_para_radianos(double graus){
+    double radianos;
+    const int centoOintenta = 180;
+
+    asm volatile(
+        "finit;"
+        "fldpi;"
+        "fild %2;"
+        "fdivrp;"
+        "fldl %1;"
+        "fmulp;"
+        "fstpl %0;"
+        : "=m"(radianos)
+        : "m"(graus), "m"(centoOintenta)
+    );
+
+    return radianos;
+}
+
 int main(){
     cout << "Soma: " << soma(1.1, 2.2) << endl;
 
@@ -190,6 +209,8 @@ int main(){
     cout << "Fatorial: " << fatorial(5) << endl;
 
     cout << "Arco seno: " << arcsen(1.0) << endl;
+
+    cout << "Radianos: " << graus_para_radianos(180) << endl;
 
     return 0;
 }
