@@ -195,6 +195,26 @@ double graus_para_radianos(double graus){
     return radianos;
 }
 
+double x_sobre_um(double x){
+    double result;
+
+    asm volatile(
+        "finit;"
+        "fldl %1;"
+        "fld1;"
+        "fdivp;"
+        "fstpl %0;"
+        : "=m"(result)
+        : "m"(x)
+    );
+
+    return result;
+}
+
+double raiz(double x, double y){
+    return potenciacao(x, x_sobre_um(y));
+}
+
 int main(){
     cout << "Soma: " << soma(1.1, 2.2) << endl;
 
@@ -211,6 +231,8 @@ int main(){
     cout << "Arco seno: " << arcsen(1.0) << endl;
 
     cout << "Radianos: " << graus_para_radianos(180) << endl;
+
+    cout << "1 sobre X: " << x_sobre_um(4) << endl;
 
     return 0;
 }
