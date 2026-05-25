@@ -10,9 +10,9 @@ using namespace std;
  * - [x] Div
  * - [x] Sen
  * - [ ] Arcsen
- * - [ ] Tg
+ * - [x] Tg
  * - [\] Exp
- * - [ ] Fatorial
+ * - [x] Fatorial
  */
 
 double soma(double a, double b){
@@ -65,6 +65,23 @@ double seno(double x){
     return result;
 }
 
+double tangente(double x){
+    double result;
+
+    asm volatile(
+        "finit ;"
+        "fldl %1;"
+        "fptan;"
+        "fstpl %0;"
+        "fstpl %0;"
+
+        : "=m"(result)
+        : "m"(x)
+    );
+
+    return result;
+}
+
 // Está com algum erro
 double potenciacao(double x, double y){
     double result;
@@ -96,6 +113,37 @@ double potenciacao(double x, double y){
     return result;
 }
 
+int fatorial(int num){
+
+    double result;
+    double n = num;
+
+    asm volatile(
+        "finit;"
+        "fld1;"
+        "fldl %1;"
+        "loop:"
+        "ftst;"
+        "fnstsw %%ax;"
+        "sahf;"
+        "jbe fim;"
+        "fxch;"
+        "fld %%st(1);"
+        "fmulp;"
+        "fxch;"
+        "fld1;"
+        "fsubrp;"
+        "jmp loop;"
+        "fim:"
+        "fstp %%st(0);"
+        "fstpl %0;"
+        : "=m"(result)
+        : "m"(n)
+    );
+
+    return result;
+}
+
 int main(){
     cout << "Soma: " << soma(1.1, 2.2) << endl;
 
@@ -103,7 +151,11 @@ int main(){
 
     printf("Seno: %.2f\n", seno(3.14159265 / 2));
 
+    printf("Tangente: %.2f\n", tangente(0));
+
     cout << "Pontenciacão: " << potenciacao(3, 2) << endl;
+
+    cout << "Fatorial: " << fatorial(10) << endl;
 
     return 0;
 }
