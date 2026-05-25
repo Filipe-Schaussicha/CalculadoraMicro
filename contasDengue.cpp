@@ -103,6 +103,7 @@ double potenciacao(double x, double y){
 }
 
 double fatorial(int num){
+    // Verificação de domínio
     if(num < 0)
         return NAN;
 
@@ -111,21 +112,29 @@ double fatorial(int num){
 
     asm volatile(
         "finit;"
+        // Carrega valores iniciais
         "fld1;"
         "fldl %1;"
+        // Início do loop
         "loop:"
+        // Verifica se o valor de n chegou a zero
         "ftst;"
         "fnstsw %%ax;"
         "sahf;"
+        // Caso sim, pula pro fim
         "jbe fim;"
+        // Multplica n por f(n-1)
         "fxch;"
         "fld %%st(1);"
         "fmulp;"
+        // Subtrai 1 de n
         "fxch;"
         "fld1;"
         "fsubrp;"
+        // Vai para o topo do loop
         "jmp loop;"
         "fim:"
+        // Salva o resultado
         "fstp %%st(0);"
         "fstpl %0;"
         : "=m"(result)
@@ -141,6 +150,7 @@ double arcsen(double x){
 
     double result;
 
+    // Calculando arcsen(x) = arctan(x / sqtr{1 - x²})
     asm volatile(
         "finit;"
         "fldl %1;"
@@ -164,6 +174,8 @@ double graus_para_radianos(double graus){
     double radianos;
     const int centoOintenta = 180;
 
+    // Converte graus para radianos
+    // a(radianos) = a(graus) * pi / 180
     asm volatile(
         "finit;"
         "fldpi;"
@@ -182,6 +194,7 @@ double graus_para_radianos(double graus){
 double x_sobre_um(double x){
     double result;
 
+    // Calcula 1/x
     asm volatile(
         "finit;"
         "fldl %1;"
