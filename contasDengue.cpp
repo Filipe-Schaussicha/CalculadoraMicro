@@ -31,7 +31,7 @@ double divisao(double a, double b){
         "finit ;"
         "fldl %1;"
         "fldl %2;"
-        "fdivp;"
+        "fdivrp;"
         "fstpl %0;"
 
         : "=m"(result)
