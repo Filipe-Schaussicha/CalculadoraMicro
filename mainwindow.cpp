@@ -3,6 +3,7 @@
 
 #include <QDebug>
 #include "polonesa.h"
+#include "calculos.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -22,6 +23,7 @@ MainWindow::~MainWindow()
     delete equacao;
     //A
     delete pctExpressao;
+    grau = true;
 }
 
 // Atualiza o mostrador da calculador
@@ -154,7 +156,7 @@ void MainWindow::on_BtnPi_clicked()
     equacao->addOperando(PI, QString::number(3.14159265358979323846));
     atualizaMostrador();
 
-    pacoteDaExpressao novo("π",0,0);
+    pacoteDaExpressao novo("3.14159265358979323846",0,0);
     pctExpressao->push_back(novo);
 }
 
@@ -344,6 +346,8 @@ void MainWindow::on_BtnEuler_clicked()
 
     pacoteDaExpressao novo("e",0,0);
     pctExpressao->push_back(novo);
+    pacoteDaExpressao novo2("^",3,0);
+    pctExpressao->push_back(novo2);
 }
 
 
@@ -469,6 +473,13 @@ void MainWindow::on_CbxInversao_checkStateChanged(const Qt::CheckState &arg1)
     }
 }
 
+bool MainWindow::getGrau() {
+    return grau;
+}
+
+void MainWindow::setGrau(bool grau){
+    this->grau=grau;
+}
 
 void MainWindow::on_BtnIgual_clicked()
 {
@@ -480,7 +491,26 @@ void MainWindow::on_BtnIgual_clicked()
 
     if(!temporario.empty()){
     if(temporario[0].getProcedencia()>=0) {
-        meuAtualizaMostrador(pct.transformaEmTexto(temporario));
+
+
+        if(ui->radioButton->isCheckable()) {
+
+            setGrau(true);
+        } else {
+            setGrau(false);
+        }
+
+        calculos calculo(this->getGrau());
+
+        QString fim = calculo.calculaPolonesa(temporario);
+
+        if(fim=="F") {
+            meuAtualizaMostrador("Cálculo matematicamente inconsistente!");
+        } else {
+            meuAtualizaMostrador(fim);
+        }
+
+
     } else {
         meuAtualizaMostrador("Erro de sintaxe!");
     }

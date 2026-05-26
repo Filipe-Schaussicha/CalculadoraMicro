@@ -33,6 +33,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         polonesa.h
         pacoteDaExpressao.cpp
         pacoteDaExpressao.h
+        calculos.h calculos.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CalculadoraAsm APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

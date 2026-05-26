@@ -28,6 +28,10 @@ public:
     //Artur
     std::vector<pacoteDaExpressao> *pctExpressao;
 
+    bool grau;
+    bool getGrau();
+    void setGrau(bool grau);
+
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
     void atualizaMostrador();
