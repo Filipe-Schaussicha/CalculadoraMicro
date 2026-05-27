@@ -25,6 +25,7 @@ public:
     double fatorial(int num);
     double arcsen(double x);
     double graus_para_radianos(double graus);
+    double radianos_para_graus(double radianos);
     double x_sobre_um(double x);
     QString calculaPolonesa(std::vector<pacoteDaExpressao> exp);
 

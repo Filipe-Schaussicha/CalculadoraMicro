@@ -152,6 +152,8 @@ double calculos::arctg(double num) {
 }
 
 double calculos::arccos(double num) {
+    if(num < -1.0 || num > 1.0)
+        return NAN;
 
     double resultado=0;
 
@@ -359,6 +361,25 @@ double calculos::arcsen(double x){
     return result;
 }
 
+double calculos::radianos_para_graus(double radianos) {
+    double graus;
+    const int centoOitenta=180;
+
+    asm volatile(
+        "finit;"
+        "fldl %1;"
+        "fildl %2;"
+        "fmulp;"
+        "fldpi;"
+        "fdivrp;"
+        "fstpl %0;"
+        : "=m"(graus)
+        : "m"(radianos), "m"(centoOitenta)
+        );
+
+    return graus;
+}
+
 double calculos::graus_para_radianos(double graus){
     double radianos;
     const int centoOintenta = 180;
@@ -557,6 +578,7 @@ QString calculos::calculaPolonesa(std::vector<pacoteDaExpressao> exp){
                     a=graus_para_radianos(a);
                 }
 
+                resultado=seno(a);
                 resultadoS= QString::number(resultado);
                 pilha.push(resultadoS);
             }
@@ -566,13 +588,21 @@ QString calculos::calculaPolonesa(std::vector<pacoteDaExpressao> exp){
                 aS=pilha.top();
                 pilha.pop();
                 a=aS.toDouble();
-
-                if(!getGrau()) {
-
-                    a=graus_para_radianos(a);
+                if(a>1 || a<-1) {
+                    return "F";
                 }
 
                 resultado=arcsen(a);
+
+                if(std::isnan(resultado)){
+
+                    return "F";
+                }
+
+                if(getGrau()) {
+                    resultado = radianos_para_graus(resultado);
+                }
+
                 resultadoS= QString::number(resultado);
                 pilha.push(resultadoS);
             }
@@ -582,12 +612,18 @@ QString calculos::calculaPolonesa(std::vector<pacoteDaExpressao> exp){
                 aS=pilha.top();
                 pilha.pop();
                 a=aS.toDouble();
-
-                if(!getGrau()) {
-
-                    a=graus_para_radianos(a);
+                if(a>1 || a<-1) {
+                    return "F";
                 }
                 resultado=arccos(a);
+
+                if(getGrau()) {
+                    resultado = radianos_para_graus(resultado);
+                }
+
+                if(std::isnan(resultado)){
+                    return "F";
+                }
                 resultadoS= QString::number(resultado);
                 pilha.push(resultadoS);
             }
@@ -604,6 +640,7 @@ QString calculos::calculaPolonesa(std::vector<pacoteDaExpressao> exp){
                 }
 
                 resultado=tangente(a);
+
                 if(std::isnan(resultado)){
                     return "F";
                 }
@@ -611,18 +648,22 @@ QString calculos::calculaPolonesa(std::vector<pacoteDaExpressao> exp){
                 pilha.push(resultadoS);
             }
 
-            if(exp[i].getNome()=="arctg") {
-
-                aS=pilha.top();
+            if(exp[i].getNome() == "arctg") {
+                aS = pilha.top();
                 pilha.pop();
-                a=aS.toDouble();
+                a = aS.toDouble();
+                resultado = arctg(a);
 
-                if(!getGrau()) {
+                if(std::isnan(resultado)){
 
-                    a=graus_para_radianos(a);
+                    return "F";
                 }
-                resultado=arctg(a);
-                resultadoS= QString::number(resultado);
+
+                if(getGrau()) {
+                    resultado = radianos_para_graus(resultado);
+                }
+
+                resultadoS = QString::number(resultado);
                 pilha.push(resultadoS);
             }
 
@@ -647,6 +688,9 @@ QString calculos::calculaPolonesa(std::vector<pacoteDaExpressao> exp){
                 aS=pilha.top();
                 pilha.pop();
                 a=aS.toDouble();
+                if(a<0) {
+                    return "F";
+                }
 
                 resultado=fatorial(a);
                 if(std::isnan(resultado)){

@@ -295,12 +295,12 @@ void MainWindow::on_BtnTg_clicked()
     if(!ui->CbxInversao->isChecked()){
         equacao->addOperador(TG);
 
-        pacoteDaExpressao novo("tan",4,0);
+        pacoteDaExpressao novo("tg",4,0);
         pctExpressao->push_back(novo);
     }else{
         equacao->addOperador(ARCTG);
 
-        pacoteDaExpressao novo("arctan",4,0);
+        pacoteDaExpressao novo("arctg",4,0);
         pctExpressao->push_back(novo);
     }
 
@@ -477,8 +477,8 @@ bool MainWindow::getGrau() {
     return grau;
 }
 
-void MainWindow::setGrau(bool grau){
-    this->grau=grau;
+void MainWindow::setGrau(bool gra){
+    this->grau=gra;
 }
 
 void MainWindow::on_BtnIgual_clicked()
@@ -487,33 +487,54 @@ void MainWindow::on_BtnIgual_clicked()
 
     polonesa portalPolones;
 
-    std::vector<pacoteDaExpressao> temporario = portalPolones.polonese(*pctExpressao);
+    if(!pctExpressao->empty() && (pctExpressao->front().getNome()!="^"
+                    && pctExpressao->front().getNome()!="-"
+                    && pctExpressao->front().getNome()!="+"
+                    && pctExpressao->front().getNome()!="*"
+                    && pctExpressao->front().getNome()!="/"
+                    && pctExpressao->front().getNome()!="!"
+                    && pctExpressao->front().getNome()!="⁻¹")) {
+        std::vector<pacoteDaExpressao> temporario = portalPolones.polonese(*pctExpressao);
 
-    if(!temporario.empty()){
-    if(temporario[0].getProcedencia()>=0) {
+        if(!temporario.empty()){
+        if(temporario[0].getProcedencia()>=0) {
 
 
-        if(ui->radioButton->isCheckable()) {
+            if(ui->radioButton->isChecked()) {
 
-            setGrau(true);
+                setGrau(true);
+            }
+            if(ui->radioButton_2->isChecked()){
+                setGrau(false);
+            }
+
+            calculos calculo(getGrau());
+
+            QString fim = calculo.calculaPolonesa(temporario);
+
+            if(fim=="F") {
+                meuAtualizaMostrador("Cálculo matematicamente inconsistente!");
+            } else {
+
+                double fimD=fim.toDouble();
+                fimD=std::abs(fimD);
+
+                if(fimD<0.00001) {
+                    fim="0";
+                }
+                meuAtualizaMostrador(fim);
+            }
+
+
         } else {
-            setGrau(false);
+            meuAtualizaMostrador("Erro de sintaxe!");
+        }
         }
 
-        calculos calculo(this->getGrau());
-
-        QString fim = calculo.calculaPolonesa(temporario);
-
-        if(fim=="F") {
-            meuAtualizaMostrador("Cálculo matematicamente inconsistente!");
-        } else {
-            meuAtualizaMostrador(fim);
-        }
-
-
-    } else {
-        meuAtualizaMostrador("Erro de sintaxe!");
-    }
+        delete equacao;
+        equacao = new Equacao();
+        delete pctExpressao;
+        pctExpressao = new std::vector<pacoteDaExpressao>();
     }
 }
 
