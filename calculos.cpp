@@ -573,7 +573,7 @@ QString calculos::calculaPolonesa(std::vector<pacoteDaExpressao> exp){
                 pilha.pop();
                 a=aS.toDouble();
 
-                if(!getGrau()) {
+                if(getGrau()) {
 
                     a=graus_para_radianos(a);
                 }
@@ -634,7 +634,7 @@ QString calculos::calculaPolonesa(std::vector<pacoteDaExpressao> exp){
                 pilha.pop();
                 a=aS.toDouble();
 
-                if(!getGrau()) {
+                if(getGrau()) {
 
                     a=graus_para_radianos(a);
                 }
@@ -673,7 +673,7 @@ QString calculos::calculaPolonesa(std::vector<pacoteDaExpressao> exp){
                 pilha.pop();
                 a=aS.toDouble();
 
-                if(!getGrau()) {
+                if(getGrau()) {
 
                     a=graus_para_radianos(a);
                 }
