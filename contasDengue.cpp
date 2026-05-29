@@ -214,7 +214,7 @@ double x_sobre_um(double x){
 int main(){
     cout << "Soma: " << soma(1.1, 2.2) << endl;
 
-    cout << "Divisão: " << divisao(10, 2) << endl;
+    cout << "Divisão: " << divisao(10, 0) << endl;
 
     printf("Seno: %.2f\n", seno(3.14159265 / 2));
 

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>391</width>
+    <width>409</width>
     <height>152</height>
    </rect>
   </property>
@@ -37,7 +37,7 @@
     <rect>
      <x>230</x>
      <y>30</y>
-     <width>141</width>
+     <width>168</width>
      <height>41</height>
     </rect>
    </property>
@@ -145,6 +145,14 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>BtnOK</tabstop>
+  <tabstop>BtnCancelar</tabstop>
+  <tabstop>BtnEuler</tabstop>
+  <tabstop>BtnPi</tabstop>
+  <tabstop>LedSaida</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
