@@ -36,6 +36,12 @@ void MainWindow::meuAtualizaMostrador(QString txt){
     ui->LedMostrador->setText(txt);
 }
 
+void MainWindow::limpa() {
+    delete equacao;
+    equacao = new Equacao();
+    delete pctExpressao;
+    pctExpressao = new std::vector<pacoteDaExpressao>();
+}
 
 /*
 * Função de click para cada botão do mostrador
@@ -483,58 +489,498 @@ void MainWindow::setGrau(bool gra){
 
 void MainWindow::on_BtnIgual_clicked()
 {
-    pacoteDaExpressao pct;
 
-    polonesa portalPolones;
-
-    if(!pctExpressao->empty() && (pctExpressao->front().getNome()!="^"
-                    && pctExpressao->front().getNome()!="-"
-                    && pctExpressao->front().getNome()!="+"
-                    && pctExpressao->front().getNome()!="*"
-                    && pctExpressao->front().getNome()!="/"
-                    && pctExpressao->front().getNome()!="!"
-                    && pctExpressao->front().getNome()!="⁻¹")) {
-        std::vector<pacoteDaExpressao> temporario = portalPolones.polonese(*pctExpressao);
-
-        if(!temporario.empty()){
-        if(temporario[0].getProcedencia()>=0) {
+    if(pctExpressao->empty()) return;
 
 
-            if(ui->radioButton->isChecked()) {
-
-                setGrau(true);
-            }
-            if(ui->radioButton_2->isChecked()){
-                setGrau(false);
-            }
-
-            calculos calculo(getGrau());
-
-            QString fim = calculo.calculaPolonesa(temporario);
-
-            if(fim=="F") {
-                meuAtualizaMostrador("Cálculo matematicamente inconsistente!");
-            } else {
-
-                double fimD=fim.toDouble();
-                fimD=std::abs(fimD);
-
-                if(fimD<0.00001) {
-                    fim="0";
-                }
-                meuAtualizaMostrador(fim);
-            }
-
-
-        } else {
-            meuAtualizaMostrador("Erro de sintaxe!");
-        }
-        }
-
+    QString ultimo = pctExpressao->back().getNome();
+    if(ultimo == "+" || ultimo == "-" || ultimo == "*" || ultimo == "/" || ultimo=="^") {
+        meuAtualizaMostrador("Erro: Expressão incompleta!");
         delete equacao;
         equacao = new Equacao();
         delete pctExpressao;
         pctExpressao = new std::vector<pacoteDaExpressao>();
+        return;
+    }
+
+    //1 -> + -
+    //2 -> * /
+    //3 -> ^ sqrt()
+    //4 -> sen cos tg arctg arccos arcsen ! ⁻¹
+    //5 -> )  (
+
+    for(int i=0;i< pctExpressao->size()-1;i++) {
+        int atual = (*pctExpressao)[i].getProcedencia();
+        int prox = (*pctExpressao)[i+1].getProcedencia();
+        QString atualStr = (*pctExpressao)[i].getNome();
+        QString proxStr = (*pctExpressao)[i+1].getNome();
+
+        if(atual>0 && prox>0) {
+
+            if(atual==1 && prox==1) {
+                meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                limpa();
+                return;
+            }
+
+            if(atual==2 && prox==2) {
+                meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                limpa();
+                return;
+            }
+
+            if((atual==1 && prox==2) || (2==1 && prox==1) ) {
+                meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                limpa();
+                return;
+            }
+
+            if(atual==1 && prox==3) {
+                if(proxStr=="^") {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+                }
+            }
+
+            if(atual==3 && prox==1) {
+                if(atualStr=="^") {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="√") {
+                    meuAtualizaMostrador("Faltou o parentese da raiz!");
+                    limpa();
+                    return;
+                }
+            }
+
+            if(atual==1 && prox==4) {
+                if(proxStr=="!" || proxStr=="⁻¹") {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+                }
+            }
+
+            if(atual==4 && prox==1) {
+                if(atualStr=="sen") {
+                    meuAtualizaMostrador("Falta o parentese do seno!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="cos") {
+                    meuAtualizaMostrador("Faltou o parentese do cosseno!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="arccos") {
+                    meuAtualizaMostrador("Faltou o parentese do arccosseno!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="arcsen") {
+                    meuAtualizaMostrador("Faltou o parentese do arcseno!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="tg") {
+                    meuAtualizaMostrador("Faltou o parentese da tangente!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="arctg") {
+                    meuAtualizaMostrador("Faltou o parentese da arctangente!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="log") {
+                    meuAtualizaMostrador("Faltou o parentese do log!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="ln") {
+                    meuAtualizaMostrador("Faltou o parentese do ln!");
+                    limpa();
+                    return;
+                }
+            }
+
+
+            if(atual==2 && prox==3) {
+                if(proxStr=="^") {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+                }
+            }
+
+            if(atual==3 && prox==2) {
+                if(proxStr=="^") {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+                }
+                if(proxStr=="√") {
+                    meuAtualizaMostrador("Faltou o parentese da raiz!");
+                    limpa();
+                    return;
+                }
+            }
+
+            if(atual==3 && prox==3) {
+                if(atualStr=="√") {
+                    meuAtualizaMostrador("Faltou o parentese da raiz!");
+                    limpa();
+                    return;
+                }
+            }
+
+
+            if(atual==3 && prox==4) {
+                if(atualStr=="√" && (proxStr=="!" || proxStr=="⁻¹")) {
+                    meuAtualizaMostrador("Erro de formatação!");
+                    limpa();
+                    return;
+                }
+
+                if(atualStr=="^" && (proxStr=="!" || proxStr=="⁻¹")) {
+                    meuAtualizaMostrador("Erro de formatação!");
+                    limpa();
+                    return;
+                }
+
+            }
+
+            if(atual==4 && prox==3) {
+                if(atualStr=="!" && proxStr=="√") {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="sen") {
+                    meuAtualizaMostrador("Falta o parentese do seno!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="cos") {
+                    meuAtualizaMostrador("Faltou o parentese do cosseno!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="arccos") {
+                    meuAtualizaMostrador("Faltou o parentese do arccosseno!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="arcsen") {
+                    meuAtualizaMostrador("Faltou o parentese do arcseno!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="tg") {
+                    meuAtualizaMostrador("Faltou o parentese da tangente!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="arctg") {
+                    meuAtualizaMostrador("Faltou o parentese da arctangente!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="log") {
+                    meuAtualizaMostrador("Faltou o parentese do log!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="ln") {
+                    meuAtualizaMostrador("Faltou o parentese do ln!");
+                    limpa();
+                    return;
+                }
+            }
+
+            if(atual==4 && prox==4) {
+                meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                limpa();
+                return;
+            }
+
+
+            if(atual==2 && prox==4) {
+                if(proxStr=="!" || proxStr=="⁻¹") {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+                }
+            }
+
+            if(atual==4 && prox==2) {
+                if(atualStr=="sen") {
+                    meuAtualizaMostrador("Falta o parentese do seno!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="cos") {
+                    meuAtualizaMostrador("Faltou o parentese do cosseno!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="arccos") {
+                    meuAtualizaMostrador("Faltou o parentese do arccosseno!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="arcsen") {
+                    meuAtualizaMostrador("Faltou o parentese do arcseno!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="tg") {
+                    meuAtualizaMostrador("Faltou o parentese da tangente!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="arctg") {
+                    meuAtualizaMostrador("Faltou o parentese da arctangente!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="log") {
+                    meuAtualizaMostrador("Faltou o parentese do log!");
+                    limpa();
+                    return;
+                }
+                if(atualStr=="ln") {
+                    meuAtualizaMostrador("Faltou o parentese do ln!");
+                    limpa();
+                    return;
+                }
+            }
+
+            if(atual==5 && prox==5) {
+                if(atualStr=="(" && proxStr==")") {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+                }
+            }
+
+            if(atual==5 && prox==4) {
+                if((proxStr=="⁻¹" || proxStr=="!") && atualStr=="(") {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+                }
+
+                if(atualStr==")") {
+                    if(proxStr=="sen") {
+                        meuAtualizaMostrador("Falta o parentese do seno!");
+                        limpa();
+                        return;
+                    }
+                    if(proxStr=="cos") {
+                        meuAtualizaMostrador("Faltou o parentese do cosseno!");
+                        limpa();
+                        return;
+                    }
+                    if(proxStr=="arccos") {
+                        meuAtualizaMostrador("Faltou o parentese do arccosseno!");
+                        limpa();
+                        return;
+                    }
+                    if(proxStr=="arcsen") {
+                        meuAtualizaMostrador("Faltou o parentese do arcseno!");
+                        limpa();
+                        return;
+                    }
+                    if(proxStr=="tg") {
+                        meuAtualizaMostrador("Faltou o parentese da tangente!");
+                        limpa();
+                        return;
+                    }
+                    if(proxStr=="arctg") {
+                        meuAtualizaMostrador("Faltou o parentese da arctangente!");
+                        limpa();
+                        return;
+                    }
+                    if(proxStr=="log") {
+                        meuAtualizaMostrador("Faltou o parentese do log!");
+                        limpa();
+                        return;
+                    }
+                    if(proxStr=="ln") {
+                        meuAtualizaMostrador("Faltou o parentese do ln!");
+                        limpa();
+                        return;
+                    }
+                }
+
+            }
+            ///////////////////////////////////
+            if(atual==4 && prox==5) {
+
+                if(proxStr=="(" && (atualStr=="!" || atualStr=="⁻¹")) {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+                }
+
+                if(proxStr==")") {
+                    if(atualStr=="sen") {
+                        meuAtualizaMostrador("Falta o parentese do seno!");
+                        limpa();
+                        return;
+                    }
+                    if(atualStr=="cos") {
+                        meuAtualizaMostrador("Faltou o parentese do cosseno!");
+                        limpa();
+                        return;
+                    }
+                    if(atualStr=="arccos") {
+                        meuAtualizaMostrador("Faltou o parentese do arccosseno!");
+                        limpa();
+                        return;
+                    }
+                    if(atualStr=="arcsen") {
+                        meuAtualizaMostrador("Faltou o parentese do arcseno!");
+                        limpa();
+                        return;
+                    }
+                    if(atualStr=="tg") {
+                        meuAtualizaMostrador("Faltou o parentese da tangente!");
+                        limpa();
+                        return;
+                    }
+                    if(atualStr=="arctg") {
+                        meuAtualizaMostrador("Faltou o parentese da arctangente!");
+                        limpa();
+                        return;
+                    }
+                    if(atualStr=="log") {
+                        meuAtualizaMostrador("Faltou o parentese do log!");
+                        limpa();
+                        return;
+                    }
+                    if(atualStr=="ln") {
+                        meuAtualizaMostrador("Faltou o parentese do ln!");
+                        limpa();
+                        return;
+                    }
+                }
+            }
+
+            if(atual==5 && prox==3){
+                if(atualStr=="("&& proxStr=="^"){
+
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+
+                }
+            }
+
+            if(atual==3 && prox==5) {
+                if((atualStr=="√" || atualStr=="^") && proxStr==")"){
+
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+
+                }
+            }
+
+            if((atual==5 && prox==2)) {
+                if(atualStr=="(") {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+                }
+            }
+
+            if(atual==2 && prox==5) {
+                if(proxStr==")") {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+                }
+            }
+
+            if(atual==5 && prox==1) {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+            }
+
+            if(atual==1 && prox==5) {
+                if(proxStr==")") {
+                    meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
+                    limpa();
+                    return;
+                }
+
+            }
+        }
+    }
+
+    try{
+
+        polonesa portalPolones;
+
+        if(!pctExpressao->empty() && (pctExpressao->front().getNome()!="^"
+                && pctExpressao->front().getNome()!="-"
+                && pctExpressao->front().getNome()!="+"
+                && pctExpressao->front().getNome()!="*"
+                && pctExpressao->front().getNome()!="/"
+                && pctExpressao->front().getNome()!="!"
+                && pctExpressao->front().getNome()!="⁻¹")) {
+
+            std::vector<pacoteDaExpressao> temporario = portalPolones.polonese(*pctExpressao);
+
+            if(!temporario.empty()){
+                if(temporario[0].getProcedencia()>=0) {
+
+
+                    if(ui->radioButton->isChecked()) {
+
+                        setGrau(true);
+                    }
+                    if(ui->radioButton_2->isChecked()){
+                        setGrau(false);
+                    }
+
+                    calculos calculo(getGrau());
+
+                    QString fim = calculo.calculaPolonesa(temporario);
+
+                    if(fim=="F") {
+                        meuAtualizaMostrador("Cálculo matematicamente inconsistente!");
+                    } else {
+
+                        double fimD=fim.toDouble();
+                        fimD=std::abs(fimD);
+
+                        if(fimD<0.00001) {
+                            fim="0";
+                        }
+                        meuAtualizaMostrador(fim);
+                    }
+
+
+                } else {
+                    meuAtualizaMostrador("Erro de sintaxe!");
+                }
+            }
+
+
+
+            delete equacao;
+            equacao = new Equacao();
+            delete pctExpressao;
+            pctExpressao = new std::vector<pacoteDaExpressao>();
+            }
+    } catch(const std::exception& e) {
+        meuAtualizaMostrador("Erro na construção da expressão!");
     }
 }
-

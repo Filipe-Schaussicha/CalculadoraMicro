@@ -31,6 +31,7 @@ public:
     bool grau;
     bool getGrau();
     void setGrau(bool grau);
+    void limpa();
 
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;

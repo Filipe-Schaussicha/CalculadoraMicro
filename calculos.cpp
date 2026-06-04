@@ -403,6 +403,7 @@ double calculos::graus_para_radianos(double graus){
 
 double calculos::x_sobre_um(double x){
     double result;
+    if(x==0) return NAN;
 
     // Calcula 1/x
     asm volatile(
