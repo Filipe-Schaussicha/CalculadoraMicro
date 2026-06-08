@@ -74,8 +74,8 @@ QString Operandos::paraString(){
     QString saida;
 
     switch(this->tipo){
-    case PI: saida = "π"; break;
-    case EULER: saida = "e"; break;
+    case PI: saida = (this->valor.size() > 0 && this->valor.first(1) == "-") ? "-π" : "π"; break;
+    case EULER: saida = (this->valor.size() > 0 && this->valor.first(1) == "-") ? "-e" : "e"; break;
     default: saida = this->valor; break;
     }
 

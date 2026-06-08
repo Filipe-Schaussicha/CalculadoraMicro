@@ -60,7 +60,7 @@ QString Equacao::paraString(){
 
 // Troca o sinal do último número
 void Equacao::trocaSinal(){
-    if(listaElementos.size() != 0 && listaElementos.back()->tipo == NUM){
+    if(listaElementos.size() != 0 && (listaElementos.back()->tipo == NUM || listaElementos.back()->tipo == PI || listaElementos.back()->tipo == EULER)){
         listaElementos.back()->trocarSinal();
     }
 }
