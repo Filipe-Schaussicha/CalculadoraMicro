@@ -11,10 +11,9 @@
 
 class Equacao
 {
-private:
+public:
     std::vector<std::unique_ptr<ElementoOperacao>> listaElementos;
 
-public:
     // Metodos
     Equacao();
 

@@ -107,22 +107,17 @@ std::vector<pacoteDaExpressao> polonesa::polonese( std::vector<pacoteDaExpressao
     } //fatal <_>
 
     while(pOperadores.size()>0) {
-
         saida.push_back(pOperadores.top());
         pOperadores.pop();
     }
 
     if(parenteses==0) {
-
         return saida;
     } else {
-
         std::vector<pacoteDaExpressao> p;
         pacoteDaExpressao erro;
         erro.setProcedencia(-1);
         p.push_back(erro);
         return p;
     }
-
-
 }

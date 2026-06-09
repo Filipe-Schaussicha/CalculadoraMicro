@@ -459,7 +459,6 @@ void MainWindow::on_BtnSinal_clicked()
             double tempDouble = temp.getNome().toDouble();
             tempDouble*=(-1);
             temp.setNome(QString::number(tempDouble));
-
             pctExpressao->push_back(temp);
         }
     }
@@ -490,7 +489,7 @@ void MainWindow::setGrau(bool gra){
 void MainWindow::on_BtnIgual_clicked()
 {
 
-    if(pctExpressao->empty()) return;
+    if(pctExpressao->empty() || (equacao->listaElementos.size() == 1 && (equacao->listaElementos.back()->tipo == NUM || equacao->listaElementos.back()->tipo == EULER || equacao->listaElementos.back()->tipo == PI))) return;
 
 
     QString ultimo = pctExpressao->back().getNome();
