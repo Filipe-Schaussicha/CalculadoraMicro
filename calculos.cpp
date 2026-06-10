@@ -331,13 +331,13 @@ double calculos::fatorial(int num){
         "fld1;"
         "fldl %1;"
         // Início do loop
-        "loop:"
+        "2:"
         // Verifica se o valor de n chegou a zero
         "ftst;"
         "fnstsw %%ax;"
         "sahf;"
         // Caso sim, pula pro fim
-        "jbe fim;"
+        "jbe 1f;"
         // Multplica n por f(n-1)
         "fxch;"
         "fld %%st(1);"
@@ -347,8 +347,8 @@ double calculos::fatorial(int num){
         "fld1;"
         "fsubrp;"
         // Vai para o topo do loop
-        "jmp loop;"
-        "fim:"
+        "jmp 2b;"
+        "1:"
         // Salva o resultado
         "fstp %%st(0);"
         "fstpl %0;"
