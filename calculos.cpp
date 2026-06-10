@@ -267,6 +267,26 @@ double calculos::tangente(double x){
 }
 
 double calculos::potenciacao(double x, double y){
+
+    if (x == 0.0) return 0.0;
+
+    bool inverterSinalResultado = false;
+
+    if (x < 0.0) {
+
+        double integral;
+        if (std::modf(y, &integral) != 0.0) {
+            return qQNaN();
+        }
+
+
+        if (static_cast<long long>(y) % 2 != 0) {
+            inverterSinalResultado = true;
+        }
+
+        x = -x;
+    }
+
     double result;
 
     asm volatile(
@@ -289,6 +309,10 @@ double calculos::potenciacao(double x, double y){
         : "=m"(result)
         : "m"(x), "m"(y)
         );
+
+    if (inverterSinalResultado) {
+        result = -result;
+    }
 
     return result;
 }

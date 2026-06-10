@@ -16,15 +16,20 @@ int polonesa::ateOndeEOperador( std::vector<pacoteDaExpressao>& l, int pos) {
 
 void polonesa::concatenaInteiros(std::vector<pacoteDaExpressao>& lista, int pos, int max) {
 
-    QString buffer=lista[pos].getNome();
+    QString buffer = lista[pos].getNome();
 
-    for(int i=pos+1; i<=max;i++) {
+    for(int i = pos + 1; i <= max; i++) {
+        QString atual = lista[i].getNome();
 
-        if(lista[i].getNome()==',') {
-            lista[i].setNome(".");
+        if(atual == "," || atual == ".") {
+            atual = ".";
         }
 
-        buffer+=lista[i].getNome();
+        buffer += atual;
+    }
+
+    if(buffer.startsWith("-.")) {
+        buffer.replace("-.", "-0.");
     }
 
     lista[pos].setNome(buffer);

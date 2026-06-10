@@ -152,8 +152,20 @@ void MainWindow::on_BtnVirgula_clicked()
     equacao->addOperando(NUM, ",");
     atualizaMostrador();
 
-    pacoteDaExpressao novo(",",0,0);
-    pctExpressao->push_back(novo);
+
+    if(!pctExpressao->empty() && pctExpressao->back().getProcedencia() == 0) {
+        pacoteDaExpressao temp = pctExpressao->back();
+        pctExpressao->pop_back();
+
+
+        temp.setNome(temp.getNome() + ".");
+
+        pctExpressao->push_back(temp);
+    } else {
+
+        pacoteDaExpressao novo("0.", 0, 0);
+        pctExpressao->push_back(novo);
+    }
 }
 
 
@@ -350,7 +362,7 @@ void MainWindow::on_BtnEuler_clicked()
     equacao->addOperador(ELEVADO);
     atualizaMostrador();
 
-    pacoteDaExpressao novo("e",0,0);
+    pacoteDaExpressao novo("2.71828182845904523536",0,0);
     pctExpressao->push_back(novo);
     pacoteDaExpressao novo2("^",3,0);
     pctExpressao->push_back(novo2);
@@ -450,17 +462,38 @@ void MainWindow::on_BtnSinal_clicked()
     equacao->trocaSinal();
     atualizaMostrador();
 
-    if(!pctExpressao->empty()) {
-        if(pctExpressao->back().getProcedencia() == 0) {
+    if(pctExpressao->empty()) return;
 
-            pacoteDaExpressao temp = pctExpressao->back();
-            pctExpressao->pop_back();
+    int i = pctExpressao->size() - 1;
+    int blocosDeNumero = 0;
 
-            double tempDouble = temp.getNome().toDouble();
-            tempDouble*=(-1);
-            temp.setNome(QString::number(tempDouble));
-            pctExpressao->push_back(temp);
+    while(i >= 0 && pctExpressao->at(i).getProcedencia() == 0) {
+        blocosDeNumero++;
+        i--;
+    }
+
+    if(blocosDeNumero > 0) {
+
+        QString numeroCompleto = "";
+
+
+        int indiceInicio = pctExpressao->size() - blocosDeNumero;
+
+        for(int j = indiceInicio; j < pctExpressao->size(); j++) {
+            QString parte = pctExpressao->at(j).getNome();
+            if(parte == ",") parte = ".";
+            numeroCompleto += parte;
         }
+
+        for(int k = 0; k < blocosDeNumero; k++) {
+            pctExpressao->pop_back();
+        }
+
+        double valor = numeroCompleto.toDouble();
+        valor *= (-1);
+
+        pacoteDaExpressao numeroCorrigido(QString::number(valor, 'g', 10), 0, 0);
+        pctExpressao->push_back(numeroCorrigido);
     }
 }
 
@@ -528,7 +561,7 @@ void MainWindow::on_BtnIgual_clicked()
                 return;
             }
 
-            if((atual==1 && prox==2) || (2==1 && prox==1) ) {
+            if((atual==1 && prox==2) || (atual==2 && prox==1) ) {
                 meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
                 limpa();
                 return;
@@ -907,9 +940,11 @@ void MainWindow::on_BtnIgual_clicked()
             }
 
             if(atual==5 && prox==1) {
+                if(atualStr=="(") {
                     meuAtualizaMostrador("Posição dos operandos na expressão é inválida!");
                     limpa();
                     return;
+                }
             }
 
             if(atual==1 && prox==5) {
